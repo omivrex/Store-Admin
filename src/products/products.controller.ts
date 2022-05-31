@@ -23,6 +23,7 @@ export class ProductsController {
 
     @Delete('/')
     deleteProduct(@Param('store') store:string, @Query('productID') productID:string):string {
+        console.log(productID, store)
         return this.ProductsService.deleteProduct(parseInt(productID), store)
     }
 }

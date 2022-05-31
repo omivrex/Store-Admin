@@ -30,7 +30,8 @@ export class ProductsService {
 
     getProductByID({productID, store}:DproductReqObj, returnProductIndex?:boolean){
         const [requestedProduct]:any[] =  productDB.products.map((product:Dproduct, index:number) => {
-            if(product.id===productID) 
+            if(product.id===productID)
+                console.log(product.id, productID)
                 return returnProductIndex? {data:product, index}:product
         })
         if (requestedProduct) {
@@ -43,6 +44,7 @@ export class ProductsService {
     deleteProduct(productID:number, store:string):string{
         const {index} = this.getProductByID({productID, store}, true)
         productDB.products.splice(index, 1)
+        console.log(productDB.products.length)
         return 'Deleted'
     }
 }
