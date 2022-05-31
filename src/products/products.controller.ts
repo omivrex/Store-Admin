@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import {DaddProductReq, Dproduct, DproductReqObj, DstoreResponse} from "../dtos/product.dto"
 @Controller('/:store')
@@ -19,5 +19,10 @@ export class ProductsController {
     getProductByID(@Param('store') store:string, @Query('productID') productID:string):Dproduct{ /** use dtos to validate content */
         const reqObj:DproductReqObj = {store, productID: parseInt(productID)}
         return this.ProductsService.getProductByID(reqObj)
+    }
+
+    @Delete('/')
+    deleteProduct(@Param('store') store:string, @Query('productID') productID:string):string {
+        return this.ProductsService.deleteProduct(parseInt(productID), store)
     }
 }

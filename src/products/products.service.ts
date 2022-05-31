@@ -14,10 +14,9 @@ export class ProductsService {
 
     addAndEditProduct({productData, store}:DaddProductReq):string{
         try {
-            let productInDb = this.getProductByID({productID: productData.id, store})
-            productInDb = {... productInDb, ...productData}
-            const productindex = productDB.products.findIndex((id:number)=> id=== productInDb.id)
-            productDB.products[productindex] = productInDb
+            let {data, index} = this.getProductByID({productID: productData.id, store}, true)
+            const productInDb = {... data, ...productData}
+            productDB.products[index] = productInDb
             return 'OK'
         } catch (error) {
             if (error.message = 'Resource Not Found') {
@@ -29,13 +28,21 @@ export class ProductsService {
         }
     }
 
-    getProductByID({productID, store}:DproductReqObj){
-        const [requestedProduct]:Dproduct[] =  productDB.products.filter(({id}:{id:number}) => id===productID)
-        console.log(requestedProduct)
+    getProductByID({productID, store}:DproductReqObj, returnProductIndex?:boolean){
+        const [requestedProduct]:any[] =  productDB.products.map((product:Dproduct, index:number) => {
+            if(product.id===productID) 
+                return returnProductIndex? {data:product, index}:product
+        })
         if (requestedProduct) {
             return requestedProduct
         } else {
             throw new HttpException('Resource Not Found', HttpStatus.NOT_FOUND)
         }
+    }
+
+    deleteProduct(productID:number, store:string):string{
+        const {index} = this.getProductByID({productID, store}, true)
+        productDB.products.splice(index, 1)
+        return 'Deleted'
     }
 }
