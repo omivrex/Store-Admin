@@ -1,17 +1,18 @@
 import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { ProductsService } from './products.service';
-import {Dproduct, DproductReqObj, DStoreResponse} from "../dtos/product.dto"
+import {DaddProductReq, Dproduct, DproductReqObj, DstoreResponse} from "../dtos/product.dto"
 @Controller('/:store')
 export class ProductsController {
     constructor(private readonly ProductsService:ProductsService){}
     @Get('/')
-    getProductsAllForStore(@Param('store') store:string): DStoreResponse{ /**use dtos to validate content */
+    getProductsAllForStore(@Param('store') store:string): DstoreResponse{ /**use dtos to validate content */
         return this.ProductsService.getProductsAllForStore(store)
     }
 
     @Put('/add')
-    addProduct(@Body() productData:Dproduct){ /** use dtos to validate content */
-        return this.ProductsService.addProduct(productData)
+    addProduct(@Body() productData:Dproduct, @Param('store') store:string){ /** use dtos to validate content */
+        const reqObj:DaddProductReq = {productData, store}
+        return this.ProductsService.addAndEditProduct(reqObj)
     }
 
     @Get('/product')

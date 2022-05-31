@@ -12,9 +12,14 @@ export class Dproduct {
   images: string[]
 }
 
-export class DStoreResponse {
+export class DstoreResponse {
   storename: string
   products: Dproduct[]
+}
+
+export class DaddProductReq {
+  store: string
+  productData: Dproduct
 }
 
 export class DproductReqObj {
