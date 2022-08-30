@@ -7,6 +7,7 @@ import { AuthController } from './auth/auth.controller';
 import { AuthService } from './auth/auth.service';
 import { ProductsController } from './products/products.controller';
 import { ProductsService } from './products/products.service';
+import User from './typeorm/product.entity';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -20,7 +21,7 @@ import { UsersModule } from './users/users.module';
       database: process.env.DB_NAME,
       username: process.env.DB_USERNAME,
       autoLoadEntities: true,
-      entities: []
+      entities: [User]
     }),
     UsersModule,
   ],

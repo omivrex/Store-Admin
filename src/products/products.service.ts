@@ -1,10 +1,17 @@
 import { HttpException, HttpStatus, Injectable, UsePipes, ValidationPipe } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { readFileSync, writeFileSync } from "fs";
+import Product from 'src/typeorm/product.entity';
+import { Repository } from 'typeorm';
 const productDB = JSON.parse(readFileSync('./src/db/products.json').toString())
 import {DaddProductReq, Dproduct, DproductReqObj, DstoreResponse} from "../dtos/product.dto"
 
 @Injectable()
 export class ProductsService {
+    constructor(
+        @InjectRepository(Product) private readonly productRepository: Repository<Product>,
+      ) {}
+          
     @UsePipes(ValidationPipe)
     getProductsAllForStore(storename:string):DstoreResponse {
         const products =  productDB.products.sort(() => Math.random() - 0.5)
@@ -22,9 +29,9 @@ export class ProductsService {
             return 'OK'
         } catch (error) {
             if (error.message = 'Resource Not Found') {
-                productDB.products.push(productData)
-                productDB.total+=1
-                console.log(productDB.products.length)
+                const newProduct:Product = this.productRepository.create(productData);
+                const savedData = this.productRepository.save(newProduct)
+                console.log('savedData:', savedData)
                 return 'OK'
             }
         }
