@@ -19,11 +19,13 @@ import { UsersModule } from './users/users.module';
       port: parseInt(process.env.DB_PORT),
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
+      synchronize: true,
       username: process.env.DB_USERNAME,
       autoLoadEntities: true,
       entities: [User]
     }),
     UsersModule,
+    TypeOrmModule.forFeature([User])
   ],
   controllers: [AppController, AuthController, ProductsController],
   providers: [AppService, AuthService, ProductsService],

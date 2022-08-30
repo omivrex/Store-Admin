@@ -52,29 +52,29 @@ export default class Product {
 
   @Column({
     nullable: true,
-    type: 'char',
+    type: 'text',
     name: 'brand'
   })
   brand: string
 
   @Column({
     nullable: false,
-    type: 'char',
+    type: 'text',
     name: 'category'
   })
   category: string
 
   @Column({
     nullable: false,
-    type: 'char',
+    type: 'text',
     name: 'thumbnail'
   })
   thumbnail: string
 
-  @Column({
+  @Column('text', {
     nullable: true,
-    type: 'text',
-    name: 'images'
+    name: 'images',
+    array: true
   })
   images: string[]
 

@@ -21,19 +21,18 @@ export class ProductsService {
     }
 
     @UsePipes(ValidationPipe)
-    addAndEditProduct({productData, store}:DaddProductReq):string{
+    addAndEditProduct({productData, store}:DaddProductReq):any{
         try {
-            let {data, index} = this.getProductByID({productID: productData.id, store}, true)
-            const productInDb = {... data, ...productData}
-            productDB.products[index] = productInDb
+            // let {data, index} = this.getProductByID({productID: productData.id, store}, true)
+            // const productInDb = {... data, ...productData}
+            // productDB.products[index] = productInDb
+            // return 'OK'
+            const newProduct:Product = this.productRepository.create(productData);
+            const savedData = this.productRepository.save(newProduct)
+            console.log('savedData:', savedData)
             return 'OK'
         } catch (error) {
-            if (error.message = 'Resource Not Found') {
-                const newProduct:Product = this.productRepository.create(productData);
-                const savedData = this.productRepository.save(newProduct)
-                console.log('savedData:', savedData)
-                return 'OK'
-            }
+            console.log(error)
         }
     }
 

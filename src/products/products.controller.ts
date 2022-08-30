@@ -13,6 +13,7 @@ export class ProductsController {
     @UsePipes(ValidationPipe)
     addProduct(@Body() productData:Dproduct, @Param('store') store:string){ /** use dtos to validate content */
         const reqObj:DaddProductReq = {productData, store}
+        console.log(reqObj)
         return this.ProductsService.addAndEditProduct(reqObj)
     }
 
